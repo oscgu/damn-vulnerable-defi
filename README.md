@@ -13,3 +13,20 @@ Visit [damnvulnerabledefi.xyz](https://damnvulnerabledefi.xyz)
 All Solidity code, practices and patterns in this repository are DAMN VULNERABLE and for educational purposes only.
 
 DO NOT USE IN PRODUCTION.
+
+
+## Solved
+
+- [x] Unstoppable
+- [x] Naive receiver
+- [x] Truster
+- [x] Side entrance
+- [x] The rewarder
+- [x] Selfie
+- [x] Compromised
+- [x] Puppet
+- [x] Puppet v2
+- [x] Free rider
+- [ ] Backdoor
+- [ ] Climber
+- [ ] Safe miners
