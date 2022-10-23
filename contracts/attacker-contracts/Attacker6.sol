@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.0;
 
-import "./FreeRiderNFTMarketplace.sol";
-import "./FreeRiderBuyer.sol";
+import "../free-rider/FreeRiderNFTMarketplace.sol";
+import "../free-rider/FreeRiderBuyer.sol";
 
 interface UniswapV2Pair {
     function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
